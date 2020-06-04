@@ -2,11 +2,12 @@
 
 # Copy or Link files
 ## ignore readme and setup files
-folders=$(ls ~/.dotfiles | grep -vE '.git|.github|setup')
+dir=$(dirname $0)
+folders=$(ls $dir | grep -vE '.git|.github|setup')
 
 for fold in ${folders}
   do
-  files=$(ls $fold | grep -vE 'gituser|git-ff')
+  files=$(ls $dir/$fold | grep -vE 'gituser|git-ff')
   for file in ${files}
     do
       if [ -f ~/.$file ] && [ -L ~/.$file ]; then 
@@ -15,7 +16,7 @@ for fold in ${folders}
         cp ~/.$file ~/.$file.$(date '+%Y%m%d').bak;
       fi
 
-      ln -s ${PWD}/$fold/$file ~/.$file
+      ln -s $dir/$fold/$file ~/.$file
     done
   done
 
