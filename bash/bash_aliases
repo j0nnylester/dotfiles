@@ -1,0 +1,12 @@
+# aliases
+alias dcl='docker-compose logs -f'
+alias drm='docker container stop $(docker container ls -aq); docker container rm $(docker container ls -aq)'
+
+# ww
+alias mcu='make clean-up'
+alias mtd='make dev; docker-compose down'
+alias osr64='openssl rand -base64'
+alias wvl='vault login -method=ldap username=$1'
+alias ydc='clear; yarn dependency-check'
+alias ylf='clear; echo "Finding lint errors..."; yarn lint:fix'
+alias ytu='clear; echo "Running unit tests..."; yarn test:unit'

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+target=$1;
+origin='';
+branch=$(git branch | grep '^\*' | cut -d' ' -f2)
+
+if [ "$target" = "" ]; then
+  if [ "$branch" = "" ]; then
+    echo "Cannot determine branch" >&2
+    exit 1
+  fi
+
+  origin=`git config branch.$branch.remote`
+
+  if [ "$?" -ne 0 ]; then
+    echo "Didn't find sensible default" >&2
+    exit 1
+  fi
+
+  target="$origin/$branch"
+fi
+
+git merge --ff-only $target
