@@ -26,22 +26,22 @@ fi
 
 
 # Edit .gituser in place
-name=$(grep 'name =' ~/.gituser | awk -F'"' '{ print $2 }')
-read -p "your name [default=$name] " name_answer
-: ${name_answer:=$name}
+if [[ $- == *i* ]]; then
+  name=$(grep 'name =' ~/.gituser | awk -F'"' '{ print $2 }')
+  read -p "your name [default=$name] " name_answer
+  : ${name_answer:=$name}
 
-email=$(grep 'email =' ~/.gituser | awk -F'"' '{ print $2 }')
-read -p "your email [default=$email] " email_answer
-: ${email_answer:=$email}
+  email=$(grep 'email =' ~/.gituser | awk -F'"' '{ print $2 }')
+  read -p "your email [default=$email] " email_answer
+  : ${email_answer:=$email}
 
-if [ "$name_answer" != "$name" ];
-then
-  sed -i "s/\"$name\"/\"$name_answer\"/g" ~/.gituser
-fi
+  if [ "$name_answer" != "$name" ]; then
+    sed -i "s/\"$name\"/\"$name_answer\"/g" ~/.gituser
+  fi
 
-if [ "$email_answer" != "$email" ];
-then
-  sed -i "s/\"$email\"/\"$email_answer\"/g" ~/.gituser
+  if [ "$email_answer" != "$email" ]; then
+    sed -i "s/\"$email\"/\"$email_answer\"/g" ~/.gituser
+  fi
 fi
 
 # download git completion
