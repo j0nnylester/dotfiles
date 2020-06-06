@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Copy or Link files
-## ignore readme and setup files
 dir=$(cd "$(dirname "$0")"; pwd)
 folders=$(ls $dir | grep -vE 'setup')
 
@@ -26,7 +24,6 @@ sed -i "s|_DOTFILES_|$dir|g" "$HOME/.gitconfig"
 
 if [ ! -f "$HOME/.gituser" ]; then
   cp git/gituser "$HOME/.gituser"
-
 fi
 
 
@@ -54,6 +51,4 @@ fi
 
 curl -sLo "$HOME/.git-completion.bash" https://raw.github.com/git/git/master/contrib/completion/git-completion.bash
 curl -sLo "$HOME/.git-prompt.bash" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
-
-# add vim-plug
 curl -sfLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
