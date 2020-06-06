@@ -2,51 +2,58 @@
 
 # Copy or Link files
 ## ignore readme and setup files
-dir=$(dirname $0)
-folders=$(ls $dir | grep -vE '.git|.github|setup')
+dir=$(cd "$(dirname "$0")"; pwd)
+folders=$(ls $dir | grep -vE 'setup')
 
 for fold in ${folders}
   do
   files=$(ls $dir/$fold | grep -vE 'gituser|git-ff')
   for file in ${files}
     do
-      if [ -f ~/.$file ] && [ -L ~/.$file ]; then 
-        rm ~/.$file
+      (if [ -L "$HOME/.$file" ]; then 
+        rm "$HOME/.$file"
+      elif [ -f "$HOME/.$file" ]; then
+        cp "$HOME/.$file" "$HOME/.$file".$(date '+%Y%m%d').bak
       else
-        cp ~/.$file ~/.$file.$(date '+%Y%m%d').bak;
-      fi
+        ls -la "$HOME/.$file"
+      fi)
 
-      ln -s $dir/$fold/$file ~/.$file
+      ln -s $dir/$fold/$file "$HOME/.$file"
     done
   done
 
-if [ ! -f ~/.gituser ]; then
-  cp git/gituser ~/.gituser
+sed -i "s|_DOTFILES_|$dir|g" "$HOME/.gitconfig"
+
+if [ ! -f "$HOME/.gituser" ]; then
+  cp git/gituser "$HOME/.gituser"
+
 fi
 
 
-# Edit .gituser in place
-if [[ $- == *i* ]]; then
-  name=$(grep 'name =' ~/.gituser | awk -F'"' '{ print $2 }')
-  read -p "your name [default=$name] " name_answer
+if tty -s
+then
+  name=$(grep 'name =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
+  if [ "$name" == "_NAME_" ]; then
+   read -p "your name [default=$name] " name_answer
   : ${name_answer:=$name}
-
-  email=$(grep 'email =' ~/.gituser | awk -F'"' '{ print $2 }')
-  read -p "your email [default=$email] " email_answer
-  : ${email_answer:=$email}
-
-  if [ "$name_answer" != "$name" ]; then
-    sed -i "s/\"$name\"/\"$name_answer\"/g" ~/.gituser
+    if [ "$name_answer" != "$name" ]; then
+      sed -i "s/\"$name\"/\"$name_answer\"/g" "$HOME/.gituser"
+    fi
   fi
+ 
 
-  if [ "$email_answer" != "$email" ]; then
-    sed -i "s/\"$email\"/\"$email_answer\"/g" ~/.gituser
+  email=$(grep 'email =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
+  if [ "$name" == "_EMAIL_" ]; then
+    read -p "your email [default=$email] " email_answer
+    : ${email_answer:=$email}
+    if [ "$email_answer" != "$email" ]; then
+      sed -i "s/\"$email\"/\"$email_answer\"/g" "$HOME/.gituser"
+    fi
   fi
 fi
 
-# download git completion
-curl -sLo ~/.git-completion.bash https://raw.github.com/git/git/master/contrib/completion/git-completion.bash
-curl -sLo ~/.git-prompt.bash https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
+curl -sLo "$HOME/.git-completion.bash" https://raw.github.com/git/git/master/contrib/completion/git-completion.bash
+curl -sLo "$HOME/.git-prompt.bash" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
 # add vim-plug
-curl -sfLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -sfLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
