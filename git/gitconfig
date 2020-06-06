@@ -30,7 +30,6 @@
         cob = checkout --no-track -b
         paths = remote -v
         authors = shortlog -s -n --no-merges
-        ff = !sh _DOTFILES_/git/git-ff
 
 [pull]
         rebase = true

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dir=$(cd "$(dirname "$0")"; pwd)
-folders=$(ls $dir | grep -vE 'setup')
+folders=$(ls $dir | grep -vE '\.sh$')
 
 for fold in ${folders}
   do
@@ -11,19 +11,18 @@ for fold in ${folders}
       (if [ -L "$HOME/.$file" ]; then 
         rm "$HOME/.$file"
       elif [ -f "$HOME/.$file" ]; then
-        cp "$HOME/.$file" "$HOME/.$file".$(date '+%Y%m%d').bak
+        cp $HOME/.$file $HOME/.$file.$(date '+%Y%m%d').bak
       else
-        ls -la "$HOME/.$file"
+        :
       fi)
 
-      ln -s $dir/$fold/$file "$HOME/.$file"
+      ln -s $dir/$fold/$file $HOME/.$file
     done
   done
 
-sed -i "s|_DOTFILES_|$dir|g" "$HOME/.gitconfig"
-
 if [ ! -f "$HOME/.gituser" ]; then
-  cp git/gituser "$HOME/.gituser"
+  cp $dir/git/gituser $HOME/.gituser
+  sed -i "s|_DOTFILES_|$dir|g" $dir/git/gituser
 fi
 
 
@@ -34,17 +33,16 @@ then
    read -p "your name [default=$name] " name_answer
   : ${name_answer:=$name}
     if [ "$name_answer" != "$name" ]; then
-      sed -i "s/\"$name\"/\"$name_answer\"/g" "$HOME/.gituser"
+      sed -i "s/\"$name\"/\"$name_answer\"/g" $HOME/.gituser
     fi
   fi
  
-
   email=$(grep 'email =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
   if [ "$name" == "_EMAIL_" ]; then
     read -p "your email [default=$email] " email_answer
     : ${email_answer:=$email}
     if [ "$email_answer" != "$email" ]; then
-      sed -i "s/\"$email\"/\"$email_answer\"/g" "$HOME/.gituser"
+      sed -i "s/\"$email\"/\"$email_answer\"/g" $HOME/.gituser
     fi
   fi
 fi

@@ -1,3 +1,6 @@
 [user]
         name = "_NAME_"
         email = "_EMAIL_"
+
+[alias]
+        ff = !sh _DOTFILES_/git/git-ff
