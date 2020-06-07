@@ -1,35 +1,36 @@
 [include]
-    path = ~/.gituser
+        path = ~/.gituser
 
 [core]
         autocrlf = input
         editor = nano
 
 [color]
-        status = auto
+        branch = auto
         diff = auto
         interactive = auto
-        branch = auto
+        status = auto
 
 [fetch]
         prune = true
 
 [alias]
-        st = status
-        lg = log --graph --decorate --branches --oneline --remotes --tags --all --color
-        lgg = log --oneline --graph --decorate
-        lga = log --graph --remotes --tags --decorate --branches --all --pretty=format:'%C(auto)%h%d %s %C(dim normal)(%an)%C(reset)'
-        lgf = log -g --decorate --branches --oneline --remotes --tags --all --color
+        authors = shortlog -s -n --no-merges
+        cdiff = diff --cached
         ci = commit
         co = checkout
-        rb = rebase -p
-        cdiff = diff --cached
-        subup = submodule update --init --recursive
-        yoink = cherry-pick
-        unstage = reset HEAD
         cob = checkout --no-track -b
+        get = fetch
+        lg = log --graph --decorate --branches --oneline --remotes --tags --all --color
+        lga = log --graph --remotes --tags --decorate --branches --all --pretty=format:'%C(auto)%h%d %s %C(dim normal)(%an)%C(reset)'
+        lgf = log -g --decorate --branches --oneline --remotes --tags --all --color
+        lgg = log --oneline --graph --decorate
         paths = remote -v
-        authors = shortlog -s -n --no-merges
+        rb = rebase -p
+        st = status
+        subup = submodule update --init --recursive
+        unstage = reset HEAD
+        yoink = cherry-pick
 
 [pull]
         rebase = true
