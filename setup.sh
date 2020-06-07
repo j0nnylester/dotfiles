@@ -22,7 +22,7 @@ for fold in ${folders}
 
 if [ ! -f "$HOME/.gituser" ]; then
   cp $dir/git/gituser $HOME/.gituser
-  sed -i "s|_DOTFILES_|$dir|g" $dir/git/gituser
+  sed -i "s|_DOTFILES_|$dir|g" $HOME/.gituser
 fi
 
 
