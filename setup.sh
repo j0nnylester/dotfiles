@@ -38,7 +38,7 @@ then
   fi
  
   email=$(grep 'email =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
-  if [ "$name" == "_EMAIL_" ]; then
+  if [ "$email" == "_EMAIL_" ]; then
     read -p "your email [default=$email] " email_answer
     : ${email_answer:=$email}
     if [ "$email_answer" != "$email" ]; then
