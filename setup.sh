@@ -3,6 +3,12 @@
 dir=$(cd "$(dirname "$0")"; pwd)
 folders=$(ls $dir | grep -vE '\.sh$')
 
+if [ $(uname -s) == "Darwin" ]; then
+  sedFlags="sed -i -e"
+else
+  sedFlags="sed -i"
+fi
+
 for fold in ${folders}
   do
   files=$(ls $dir/$fold | grep -vE 'gituser|git-ff')
@@ -25,7 +31,7 @@ if [ ! -f "$HOME/.gituser" ]; then
 fi
 
 if [[ -n $(grep _DOTFILES_ $HOME/.gituser) ]]; then
-  sed -i "s|_DOTFILES_|$dir|g" $HOME/.gituser
+  $sedFlags "s|_DOTFILES_|$dir|g" $HOME/.gituser
 fi
 
 if tty -s
@@ -35,7 +41,7 @@ then
    read -p "your name [default=$name] " name_answer
   : ${name_answer:=$name}
     if [ "$name_answer" != "$name" ]; then
-      sed -i "s/\"$name\"/\"$name_answer\"/g" $HOME/.gituser
+      $sedFlags "s/$name/$name_answer/g" $HOME/.gituser
     fi
   fi
  
@@ -44,7 +50,7 @@ then
     read -p "your email [default=$email] " email_answer
     : ${email_answer:=$email}
     if [ "$email_answer" != "$email" ]; then
-      sed -i "s/\"$email\"/\"$email_answer\"/g" $HOME/.gituser
+      $sedFlags "s/$email/$email_answer/g" $HOME/.gituser
     fi
   fi
 fi
