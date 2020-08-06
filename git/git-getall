@@ -1,0 +1,22 @@
+#!/bin/bash
+
+repos_folder=$1;
+if [ -z $repos_folder ]; then
+  printf "%-${width}s\n" "please provide a base folder to search for git repos"
+  exit 1
+fi
+
+width=35
+printf "%-${width}s %-5s" "finding repos..."
+repos_list=$(find $1 -maxdepth 1 -type d)
+printf "\r%-${width}s %-5s\n" "finding repos..." "done."
+
+for repo in $repos_list
+  do
+    cd $repo
+    if [[ -n $(ls -la | grep git) ]] && [[ -n $(git remote -v) ]]; then
+      printf "%-${width}s %-11s" "$(basename $PWD)" "...fetching"
+      git fetch --quiet
+      printf "\r%-${width}s %-11s\n"  "$(basename $PWD)" "done."
+    fi
+  done

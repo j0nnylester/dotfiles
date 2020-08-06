@@ -4,3 +4,4 @@
 
 [alias]
         ff = !sh _DOTFILES_/git/git-ff
+        getall = !sh _DOTFILES_/git/git-getall
