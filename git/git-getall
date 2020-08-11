@@ -8,7 +8,7 @@ fi
 
 width=35
 printf "%-${width}s %-5s" "finding repos..."
-repos_list=$(find ~/Code/ -name .git -type d -prune | sed 's/.\{5\}$//')
+repos_list=$(find $1 -maxdepth 2 -name .git -type d -prune | sed 's/.\{5\}$//')
 printf "\r%-${width}s %-5s\n" "finding repos..." "done."
 
 for repo in $repos_list
