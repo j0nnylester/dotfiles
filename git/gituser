@@ -3,5 +3,5 @@
         email = "_EMAIL_"
 
 [alias]
-        ff = !sh _DOTFILES_/git/git-ff
-        getall = !sh _DOTFILES_/git/git-getall
+        ff = ! _DOTFILES_/git/git-ff
+        getall = ! _DOTFILES_/git/git-getall
