@@ -25,14 +25,10 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 export PS1
 
-export PATH="$PATH:/usr/local/lib/npm/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/OneDrive - Wealth Wizards Ltd/bin"
-complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-
-if [ -x "$(command -v kubectl)" ]; then
-  source <(kubectl completion bash)
-fi
-
-export KUBECONFIG="$HOME/.kube/config:$HOME/.kube/clusters"
-
 export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+for profile in $(find $HOME -name .*_bash_profile -maxdepth 1)
+  do
+    source $profile
+  done

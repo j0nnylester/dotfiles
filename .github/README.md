@@ -6,6 +6,7 @@ __To:__
 
 - bash:
   - soft link *bash_aliases* and *bash_profile*  to  `~/.bash_aliases` and `~/.bash_profile`
+  - add custom org bash profiles from `~/.<org>_bash_profile`
 
 - git:
   - soft link *gitconfig*  to  `~/.gitconfig`
