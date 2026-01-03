@@ -1,9 +1,9 @@
 #!/bin/bash
 
-dir=$(cd "$(dirname "$0")"; pwd)
-folders=$(ls $dir | grep -vE '\.sh$')
+dir=$(cd "$(dirname "$0")" || exit; pwd)
+folders=$(ls "$dir" | grep -vE '\.sh$')
 
-if [ $(uname -s) == "Darwin" ]; then
+if [ "$(uname -s)" == "Darwin" ]; then
   sedFlags="sed -i -e"
 else
   sedFlags="sed -i"
@@ -11,46 +11,46 @@ fi
 
 for fold in ${folders}
   do
-  files=$(ls $dir/$fold | grep -vE 'gituser|git-ff')
+  files=$(ls "$dir/$fold" | grep -vE 'gituser|git-ff')
   for file in ${files}
     do
       (if [ -L "$HOME/.$file" ]; then 
         rm "$HOME/.$file"
       elif [ -f "$HOME/.$file" ]; then
-        cp $HOME/.$file $HOME/.$file.$(date '+%Y%m%d').bak
+        cp "$HOME/.$file" "$HOME/.$file.$(date '+%Y%m%d').bak"
       else
         :
       fi)
 
-      ln -s $dir/$fold/$file $HOME/.$file
+      ln -s "$dir/$fold/$file" "$HOME/.$file"
     done
   done
 
 if [ ! -f "$HOME/.gituser" ]; then
-  cp $dir/git/gituser $HOME/.gituser
+  cp "$dir/git/gituser" "$HOME/.gituser"
 fi
 
-if [[ -n $(grep _DOTFILES_ $HOME/.gituser) ]]; then
-  $sedFlags "s|_DOTFILES_|$dir|g" $HOME/.gituser
+if grep -q _DOTFILES_ "$HOME/.gituser"; then
+  $sedFlags "s|_DOTFILES_|$dir|g" "$HOME/.gituser"
 fi
 
 if tty -s
 then
   name=$(grep 'name =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
   if [ "$name" == "_NAME_" ]; then
-   read -p "your name [default=$name] " name_answer
-  : ${name_answer:=$name}
+   read -rp "your name [default=${name}] " name_answer
+  : "${name_answer:=$name}"
     if [ "$name_answer" != "$name" ]; then
-      $sedFlags "s/$name/$name_answer/g" $HOME/.gituser
+      $sedFlags "s/$name/$name_answer/g" "$HOME/.gituser"
     fi
   fi
  
   email=$(grep 'email =' "$HOME/.gituser" | awk -F'"' '{ print $2 }')
   if [ "$email" == "_EMAIL_" ]; then
-    read -p "your email [default=$email] " email_answer
-    : ${email_answer:=$email}
+    read -rp "your email [default=${email}] " email_answer
+    : "${email_answer:=$email}"
     if [ "$email_answer" != "$email" ]; then
-      $sedFlags "s/$email/$email_answer/g" $HOME/.gituser
+      $sedFlags "s/$email/$email_answer/g" "$HOME/.gituser"
     fi
   fi
 fi
