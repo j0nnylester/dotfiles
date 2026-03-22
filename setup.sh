@@ -1,7 +1,9 @@
 #!/bin/bash
 
+set -e
+
 dir=$(cd "$(dirname "$0")" || exit; pwd)
-folders=$(ls "$dir" | grep -vE '\.sh$')
+folders=$(find "$dir" -maxdepth 1 -type d -name "[!.]*")
 
 if [ "$(uname -s)" == "Darwin" ]; then
   sedFlags="sed -i -e"
@@ -11,18 +13,19 @@ fi
 
 for fold in ${folders}
   do
-  files=$(ls "$dir/$fold" | grep -vE 'gituser|git-ff')
+  files=$(find "$fold" -maxdepth 1 -type f -not -name "gituser" -not -name "git-ff")
   for file in ${files}
     do
-      (if [ -L "$HOME/.$file" ]; then 
-        rm "$HOME/.$file"
-      elif [ -f "$HOME/.$file" ]; then
-        cp "$HOME/.$file" "$HOME/.$file.$(date '+%Y%m%d').bak"
+      filename=$(basename "$file")
+      (if [ -L "$HOME/.$filename" ]; then
+        rm "$HOME/.$filename"
+      elif [ -f "$HOME/.$filename" ]; then
+        cp "$HOME/.$filename" "$HOME/.$filename.$(date '+%Y%m%d').bak"
       else
         :
       fi)
 
-      ln -s "$dir/$fold/$file" "$HOME/.$file"
+      ln -s "$file" "$HOME/.$filename"
     done
   done
 
