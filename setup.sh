@@ -61,3 +61,7 @@ fi
 curl -sLo "$HOME/.git-completion.bash" https://raw.github.com/git/git/master/contrib/completion/git-completion.bash
 curl -sLo "$HOME/.git-prompt.bash" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 curl -sfLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# output done
+git -C "$dir" rev-parse --short HEAD > "$dir/install"
+
